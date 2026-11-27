@@ -52,7 +52,7 @@
     p1: 'Yalnızca instagram.com’da çalışır, Hikâyeler’de kapalı kalır.',
     p2: 'Ayarlarını tarayıcının eklenti deposunda tutar. İstediği tek izin bu.',
     p3: 'Hiçbir yere bir şey göndermez: ağ isteği yok, analitik yok, hesap yok.',
-    p4: 'Instagram’ın sayfasını nasıl kurduğuna bağlı değil, yani bir tasarım değişikliği onu pek bozmaz.',
+    p4: 'Instagram’ın class adlarına ya da seçicilerine dayanmaz; küçük tasarım değişiklikleri onu kolay kolay bozmaz.',
     'foot.disclaimer': 'Reel Pilot bağımsız bir projedir; Instagram ya da Meta ile bağlantısı yoktur.',
     'foot.source': 'Kaynak kod GitHub’da',
   };
