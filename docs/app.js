@@ -43,7 +43,7 @@
     x3: 'Kareyi resim olarak kopyala',
     x4: 'Reel’in bir bölümünü döngüye al',
     x5: 'Bu reel’de kal',
-    x6: 'Bir mola hatırlatıcı da seçtiğin sayıda reel ya da dakika sonunda oynatmayı durdurur ve sen devam edene kadar bekler.',
+    x6: 'Sponsorlu reel’ler sen görmeden gizlenir ve atlanır. Bir mola hatırlatıcı da seçtiğin sayıda reel ya da dakika sonunda oynatmayı durdurur.',
     'install.title': 'Bir dakikada kur',
     's1.title': 'İndir ve klasöre çıkar',
     's1.body':
@@ -54,7 +54,7 @@
     's3.title': 'Klasörü yükle',
     's3.body':
       '<strong>Paketlenmemiş öğe yükle</strong> düğmesine tıkla, çıkardığın klasörü seç, ardından <a href="https://www.instagram.com/reels/">instagram.com/reels</a> adresini aç.',
-    'install.note': '',
+    'install.note': 'Eklenti Türkçe ve İngilizce. Tarayıcının dilini izler; popup’tan değiştirebilirsin.',
     'privacy.title': 'Tek bir izin istiyor',
     p1: 'Yalnızca instagram.com’da çalışır, Hikâyeler’de kapalı kalır.',
     p2: 'Ayarlarını tarayıcının eklenti deposunda tutar. İstediği tek izin bu.',
