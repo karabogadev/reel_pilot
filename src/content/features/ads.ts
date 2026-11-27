@@ -6,6 +6,8 @@ import { isAdMarker, matchAds, type Box } from '../../core/ads.ts';
 import type { Ctx } from '../runtime.ts';
 
 const SCAN_MS = 250;
+/** What Instagram renders an ad's call-to-action as. */
+const CLICKABLE = 'a, button, [role="button"], [role="link"]';
 
 /** What we changed on an ad, so it can be undone if Instagram reuses the element for a normal reel. */
 interface Hidden {
@@ -29,7 +31,7 @@ export function ads(ctx: Ctx): void {
       const text = node.nodeValue ?? '';
       if (text.length > 24 || !text.trim()) continue;
       const el = node.parentElement;
-      if (el && isAdMarker(text, !!el.closest('a, button, [role="button"]'))) found.push(el);
+      if (el && isAdMarker(text, !!el.closest(CLICKABLE))) found.push(el);
     }
     return found;
   }
@@ -44,6 +46,19 @@ export function ads(ctx: Ctx): void {
     while (box && !box.contains(marker)) box = box.parentElement;
     if (!box || box.getElementsByTagName('video').length !== 1) return null;
     return box.getBoundingClientRect().height <= rect.height * 1.6 ? box : null;
+  }
+
+  /**
+   * Can the viewer see `marker` right now? Some layouts keep the info column (with "Shop Now") outside the reel's
+   * own box, so ownership cannot be proven from the DOM. A marker that is on screen and not covered by anything
+   * is next to the reel the viewer is looking at; one under a reel opened on top of the home feed is covered.
+   */
+  function onTop(marker: Element, box: Box): boolean {
+    const x = (box.left + box.right) / 2;
+    const y = (box.top + box.bottom) / 2;
+    if (x < 0 || y < 0 || x >= window.innerWidth || y >= window.innerHeight) return false;
+    const hit = document.elementFromPoint(x, y);
+    return !!hit && (marker.closest(CLICKABLE) ?? marker).contains(hit);
   }
 
   function hide(video: HTMLVideoElement, box: HTMLElement): void {
@@ -73,7 +88,10 @@ export function ads(ctx: Ctx): void {
       const video = list[vi];
       const marker = found[mi];
       const rect = rects[vi];
-      return video && marker && rect ? reelBox(video, marker, rect) : null;
+      const markerBox = boxes[mi];
+      if (!video || !marker || !rect || !markerBox) return null;
+      // Without a reel box of its own, hide only the video: never a container that might be the whole page.
+      return reelBox(video, marker, rect) ?? (onTop(marker, markerBox) ? video : null);
     };
     const matches = matchAds(rects, boxes, (vi, mi) => owner(vi, mi) !== null);
     list.forEach((video, i) => {
