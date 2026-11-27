@@ -31,6 +31,7 @@ const en = {
   loopSet: (a: string, b: string) => `Loop ${a}–${b}`,
   loopOff: 'Loop off',
   unlocked: 'Unlocked',
+  adSkipped: 'Ad skipped',
 
   // Break reminder
   breakTitle: 'Time for a break',
@@ -54,6 +55,8 @@ const en = {
   duration: 'Time',
   minutesOff: 'Time: off',
   minutes: (n: number) => `${n} min`,
+  skipAds: 'Skip ads',
+  skipAdsHint: 'Ads are hidden and the feed jumps past them',
   shortcuts: 'Keyboard shortcuts',
   shortcutList: 'Shortcut list',
   keySeek: 'Seek back / forward',
@@ -87,6 +90,7 @@ const tr: Messages = {
   loopSet: (a, b) => `Döngü ${a}–${b}`,
   loopOff: 'Döngü kapalı',
   unlocked: 'Kilit açıldı',
+  adSkipped: 'Reklam geçildi',
 
   breakTitle: 'Mola zamanı',
   breakReels: (n) => `${n} reel izledin.`,
@@ -108,6 +112,8 @@ const tr: Messages = {
   duration: 'Süre',
   minutesOff: 'Süre: kapalı',
   minutes: (n) => `${n} dk`,
+  skipAds: 'Reklamları geç',
+  skipAdsHint: 'Reklamlar gizlenir, akış onları atlar',
   shortcuts: 'Klavye kısayolları',
   shortcutList: 'Kısayol listesi',
   keySeek: 'Geri / ileri sar',

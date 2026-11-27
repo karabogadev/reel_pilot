@@ -12,6 +12,7 @@ export const DEFAULTS: Readonly<Settings> = Object.freeze({
   shortcuts: true,
   stopAfterReels: 0,
   stopAfterMinutes: 0,
+  skipAds: true,
   lang: 'auto',
 });
 
@@ -44,6 +45,7 @@ export function normalizeSettings(raw: unknown): Settings {
     shortcuts: typeof r.shortcuts === 'boolean' ? r.shortcuts : DEFAULTS.shortcuts,
     stopAfterReels: int(r.stopAfterReels, 0, 500, DEFAULTS.stopAfterReels),
     stopAfterMinutes: int(r.stopAfterMinutes, 0, 600, DEFAULTS.stopAfterMinutes),
+    skipAds: typeof r.skipAds === 'boolean' ? r.skipAds : DEFAULTS.skipAds,
     lang: LANG_SETTINGS.includes(r.lang as LangSetting) ? (r.lang as LangSetting) : DEFAULTS.lang,
   };
 }

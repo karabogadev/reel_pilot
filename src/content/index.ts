@@ -1,5 +1,6 @@
 /** Content script entry: one runtime, the features on top of it, and the popup's diagnostics request. */
 import type { Message } from '../shared/types.ts';
+import { ads } from './features/ads.ts';
 import { session } from './features/session.ts';
 import { viewing } from './features/viewing.ts';
 import { createRuntime } from './runtime.ts';
@@ -14,6 +15,7 @@ if (!flag.__reelPilotLoaded) {
   const runtime = createRuntime(__VERSION__);
   viewing(runtime);
   session(runtime);
+  ads(runtime);
   runtime.start();
 
   chrome.runtime.onMessage.addListener((message: Message, _sender, respond) => {

@@ -15,6 +15,8 @@ export interface Settings {
   stopAfterReels: number;
   /** Take a break after this many minutes of playback; 0 turns the limit off. */
   stopAfterMinutes: number;
+  /** Hide ads on the Reels feed and jump past them. */
+  skipAds: boolean;
   /** Language of the popup and the in-page UI. */
   lang: LangSetting;
 }
