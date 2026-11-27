@@ -204,7 +204,8 @@
   }
 
   window.addEventListener('keydown', (e) => {
-    if (e.ctrlKey || e.metaKey || e.altKey || !ACTIONS[e.code]) return;
+    // Only while the demo is on screen, so keys elsewhere on the page don't change hidden state.
+    if (!state.visible || e.ctrlKey || e.metaKey || e.altKey || !ACTIONS[e.code]) return;
     if (e.code === 'KeyA' && e.repeat) return;
     e.preventDefault();
     ACTIONS[e.code]();
