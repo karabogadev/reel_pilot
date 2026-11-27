@@ -17,6 +17,8 @@ export interface Settings {
   stopAfterMinutes: number;
   /** Hide ads on the Reels feed and jump past them. */
   skipAds: boolean;
+  /** Keep the reel playing when the tab is in the background. */
+  backgroundPlay: boolean;
   /** Language of the popup and the in-page UI. */
   lang: LangSetting;
 }

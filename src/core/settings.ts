@@ -13,6 +13,7 @@ export const DEFAULTS: Readonly<Settings> = Object.freeze({
   stopAfterReels: 0,
   stopAfterMinutes: 0,
   skipAds: true,
+  backgroundPlay: false,
   lang: 'auto',
 });
 
@@ -46,6 +47,7 @@ export function normalizeSettings(raw: unknown): Settings {
     stopAfterReels: int(r.stopAfterReels, 0, 500, DEFAULTS.stopAfterReels),
     stopAfterMinutes: int(r.stopAfterMinutes, 0, 600, DEFAULTS.stopAfterMinutes),
     skipAds: typeof r.skipAds === 'boolean' ? r.skipAds : DEFAULTS.skipAds,
+    backgroundPlay: typeof r.backgroundPlay === 'boolean' ? r.backgroundPlay : DEFAULTS.backgroundPlay,
     lang: LANG_SETTINGS.includes(r.lang as LangSetting) ? (r.lang as LangSetting) : DEFAULTS.lang,
   };
 }
