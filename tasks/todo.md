@@ -42,12 +42,12 @@ Decisions (user): make the repo public · `README.md` (EN) + `README.tr.md` · s
   - Light/dark theme, 16px gutter at phone width, `prefers-reduced-motion`
 - [x] `README.md` rewrite (EN) + `README.tr.md`; language switcher at the top, site + download links, note that the interface is in Turkish
 - [x] Verification: headless Brave screenshots at 390px and 1280px, TR/EN toggle, console errors; `node --test`
-- [ ] Commit on `main` + push
-- [ ] Make the repo public, set description/homepage, enable Pages (`main` /docs)
-- [ ] `reel-pilot.zip` (built from `dist/` after the v0.2.0 build) → `gh release create v0.2.0`
-- [ ] Live check: Pages URL + download link
+- [x] Commit on `main` + push
+- [x] Make the repo public, set description/homepage, enable Pages (`main` /docs)
+- [x] `reel-pilot.zip` (built from `dist/` after the v0.2.0 build) → `gh release create v0.2.0`
+- [x] Live check: Pages URL + download link
 
-**On hold (2026-11-27):** another session is doing a v0.2.0 TypeScript/esbuild rewrite in the same working tree.
+**Was on hold (2026-11-27):** another session is doing a v0.2.0 TypeScript/esbuild rewrite in the same working tree.
 User decision: wait for v0.2.0. Then: align the README's "How it works / Development / release" sections and the site
 copy with v0.2.0 (`npm run build`, Load unpacked `dist/`, new features) → commit only these files → push → public →
 Pages → release v0.2.0.
@@ -84,3 +84,15 @@ Not verified: clipboard copy of a frame (headless has no clipboard; the download
 extension install, and everything specific to a logged-in session.
 
 Deviation from the plan: M0 and M1 are one commit, because the port and the new rules share files.
+
+## Review — Pages + README + v0.2.0 release
+
+Live: https://karabogadev.github.io/reel_pilot/ (Pages from `main` /docs), release `v0.2.0` with `reel-pilot.zip`
+(contents of `dist/`). Verified: `npm run check` (typecheck, lint, 26 tests), Brave `--pack-extension` accepts
+`dist/` (valid manifest, every referenced file exists), `releases/latest/download/reel-pilot.zip` is byte-identical to
+the local zip, the live page and its assets return 200, the font loads, TR/EN toggle and demo work, no horizontal scroll
+at 390px.
+
+Not verified: installing the zip as a real extension in a logged-in Brave session (Stop 1 of v0.2 is still open).
+
+Open: no `LICENSE` yet, though the site says "open source"; until there is one, nobody may legally reuse the code.
