@@ -4,6 +4,7 @@
  * Every frame it is aligned to the active video's on-screen rectangle.
  */
 import { formatTime } from '../core/format.ts';
+import type { Messages } from '../core/i18n.ts';
 import { clamp } from '../core/settings.ts';
 import type { AbLoop } from '../shared/types.ts';
 
@@ -119,6 +120,7 @@ export interface OverlayState {
   offSpeed: boolean;
   autoAdvance: boolean;
   feed: boolean;
+  text: Messages;
 }
 
 export interface Banner {
@@ -151,17 +153,14 @@ export function createOverlay(handlers: OverlayHandlers): Overlay {
   sheet.replaceSync(CSS);
   shadow.adoptedStyleSheets = [sheet];
 
-  const slower = el('button', { class: 'step', tabindex: '-1', title: 'Yavaşlat (S)', 'aria-label': 'Yavaşlat', text: '−' });
-  const speed = el('button', { class: 'speed', tabindex: '-1', title: "1x'e dön (R)", text: '1x' });
-  const faster = el('button', { class: 'step', tabindex: '-1', title: 'Hızlandır (D)', 'aria-label': 'Hızlandır', text: '+' });
+  // Labels and titles are filled in by setState, in the language picked in the popup.
+  const slower = el('button', { class: 'step', tabindex: '-1', text: '−' });
+  const speed = el('button', { class: 'speed', tabindex: '-1', text: '1x' });
+  const faster = el('button', { class: 'step', tabindex: '-1', text: '+' });
   const sep = el('span', { class: 'sep' });
-  const auto = el('button', { class: 'toggle auto', tabindex: '-1', title: 'Otomatik geçiş (A)', 'aria-pressed': 'false' }, [
-    icon(ICON_CHEVRONS),
-    'Oto',
-  ]);
-  const lock = el('button', { class: 'toggle lock', tabindex: '-1', title: "Bu reel'de kal (K)", 'aria-label': "Bu reel'de kal", 'aria-pressed': 'false' }, [
-    icon(ICON_LOCK),
-  ]);
+  const autoLabel = document.createTextNode('');
+  const auto = el('button', { class: 'toggle auto', tabindex: '-1', 'aria-pressed': 'false' }, [icon(ICON_CHEVRONS), autoLabel]);
+  const lock = el('button', { class: 'toggle lock', tabindex: '-1', 'aria-pressed': 'false' }, [icon(ICON_LOCK)]);
   const pill = el('div', { class: 'pill' }, [slower, speed, faster, sep, auto, lock]);
 
   const fill = el('div', { class: 'fill' });
@@ -314,11 +313,28 @@ export function createOverlay(handlers: OverlayHandlers): Overlay {
   }
 
   let feed = false;
+  let text: Messages | null = null;
+
+  function setText(next: Messages): void {
+    if (next === text) return;
+    text = next;
+    const label = (button: HTMLElement, name: string, key: string): void => {
+      button.title = `${name} (${key})`;
+      button.setAttribute('aria-label', name);
+    };
+    label(slower, next.slower, 'S');
+    label(faster, next.faster, 'D');
+    speed.title = `${next.resetSpeed} (R)`;
+    auto.title = `${next.autoAdvance} (A)`;
+    autoLabel.data = next.autoShort;
+    label(lock, next.stayOnReel, 'K');
+  }
 
   return {
     frame,
     hide,
     setState(state) {
+      setText(state.text);
       feed = state.feed;
       speed.textContent = state.speedLabel;
       rootEl.classList.toggle('offspeed', state.offSpeed);

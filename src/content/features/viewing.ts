@@ -68,14 +68,14 @@ export function viewing(ctx: Ctx): void {
       if (!blob) throw new Error('empty frame');
       try {
         await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-        overlay.toast('Kare kopyalandı');
+        overlay.toast(ctx.t().frameCopied);
       } catch {
         // The clipboard needs a focused page and may be blocked by the site; a download always works.
         download(blob, `reel-${formatTime(v.currentTime).replace(':', '-')}.png`);
-        overlay.toast('Kare indirildi');
+        overlay.toast(ctx.t().frameDownloaded);
       }
     } catch {
-      overlay.toast('Kare alınamadı');
+      overlay.toast(ctx.t().frameFailed);
     }
   }
 
@@ -106,14 +106,14 @@ export function viewing(ctx: Ctx): void {
     const v = ctx.active();
     if (!v) return;
     const next = withLoopEnd(loop, v.currentTime, v.duration);
-    if (!next) return overlay.toast("B, A'dan sonra olmalı");
+    if (!next) return overlay.toast(ctx.t().loopEndBeforeStart);
     setLoop(next);
-    overlay.toast(`Döngü ${formatTime(next.a)}–${formatTime(next.b ?? 0)}`);
+    overlay.toast(ctx.t().loopSet(formatTime(next.a), formatTime(next.b ?? 0)));
   });
   ctx.handle('loopClear', () => {
     if (!loop) return;
     setLoop(null);
-    overlay.toast('Döngü kapalı');
+    overlay.toast(ctx.t().loopOff);
   });
   ctx.onFrame((v) => {
     const to = loopSeek(v.currentTime, loop);
@@ -130,7 +130,7 @@ export function viewing(ctx: Ctx): void {
   };
   ctx.handle('toggleLock', () => {
     setLock(!locked);
-    overlay.toast(locked ? "Bu reel'de kal" : 'Kilit açıldı');
+    overlay.toast(locked ? ctx.t().stayOnReel : ctx.t().unlocked);
   });
   ctx.gate(() => (locked ? 'lock' : null));
 

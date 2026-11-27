@@ -24,10 +24,11 @@ export function session(ctx: Ctx): void {
     onBreak = true;
     ctx.active()?.pause();
     const { stopAfterReels, stopAfterMinutes } = ctx.settings();
+    const t = ctx.t();
     ctx.overlay.banner({
-      title: 'Mola zamanı',
-      text: hit === 'reels' ? `${stopAfterReels} reel izledin.` : `${stopAfterMinutes} dakikadır izliyorsun.`,
-      action: 'Devam et',
+      title: t.breakTitle,
+      text: hit === 'reels' ? t.breakReels(stopAfterReels) : t.breakMinutes(stopAfterMinutes),
+      action: t.breakContinue,
       onAction: resume,
     });
   }

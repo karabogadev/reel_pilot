@@ -12,6 +12,7 @@
  */
 import { pickActive } from '../core/active.ts';
 import { formatSpeed } from '../core/format.ts';
+import { messages, resolveLang, type Messages } from '../core/i18n.ts';
 import { isTypingTarget, keyAction, type Action } from '../core/keys.ts';
 import { clampTime, decideEnd, effectiveRate } from '../core/playback.ts';
 import { routeOf } from '../core/route.ts';
@@ -31,6 +32,8 @@ export interface Ctx {
   /** Aborted when the runtime shuts down; pass it to every addEventListener. */
   readonly signal: AbortSignal;
   settings(): Settings;
+  /** The strings for the language picked in the popup. */
+  t(): Messages;
   active(): HTMLVideoElement | null;
   route(): Route;
   seekTo(time: number): void;
@@ -71,6 +74,7 @@ export function createRuntime(version: string): Runtime {
   let lastFrameAt = 0;
 
   const route = (): Route => routeOf(location.pathname);
+  const t = (): Messages => messages(resolveLang(settings.lang, navigator.language));
   const dispatch = (action: Action): void => handlers.get(action.type)?.(action);
 
   const overlay = createOverlay({
@@ -91,6 +95,7 @@ export function createRuntime(version: string): Runtime {
       offSpeed: settings.speed !== 1,
       autoAdvance: settings.autoAdvance,
       feed,
+      text: t(),
     });
   }
 
@@ -158,7 +163,7 @@ export function createRuntime(version: string): Runtime {
   function seekBy(dir: 1 | -1): void {
     if (!active || !Number.isFinite(active.duration)) return;
     seekTo(active.currentTime + dir * settings.seekStep);
-    overlay.toast(`${dir > 0 ? '+' : '−'}${settings.seekStep} sn`);
+    overlay.toast(t().seek(dir, settings.seekStep));
   }
 
   // ---- Active video ---------------------------------------------------------
@@ -275,7 +280,7 @@ export function createRuntime(version: string): Runtime {
 
   function toggleAuto(): void {
     update({ autoAdvance: !settings.autoAdvance });
-    overlay.toast(`Otomatik geçiş ${settings.autoAdvance ? 'açık' : 'kapalı'}`);
+    overlay.toast(t().autoAdvanceState(settings.autoAdvance));
   }
 
   // ---- Frame loop -----------------------------------------------------------
@@ -394,6 +399,7 @@ export function createRuntime(version: string): Runtime {
     overlay,
     signal: lifetime.signal,
     settings: () => settings,
+    t,
     active: () => active,
     route,
     seekTo,
