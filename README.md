@@ -22,7 +22,7 @@ Instagram Reels is missing on desktop:
 - **Speed.** 0.25x–4x, remembered and applied to every reel that follows. Hold `F` for double speed.
 - **Viewing tools.** Step frame by frame, copy the current frame as an image, loop a part of a reel (A-B loop), or
   stay on one reel instead of moving on.
-- **Full screen.** Press `T` or the button on the reel: the feed fills the screen and auto-advance keeps going.
+- **Full screen.** Press `T` or the button on the reel: Instagram fills the screen and auto-advance keeps going.
 - **Background play.** Optional: switching tabs no longer pauses the reel. Turn it on in the popup.
 - **Break reminder. Pauses after a number of reels or minutes you choose, until you press continue.
 - **No ads.** Sponsored reels are hidden, muted and skipped as soon as they reach the screen. On by default; switch
