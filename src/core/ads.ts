@@ -46,15 +46,20 @@ const SIDE_REACH = 520;
 
 /**
  * For each video, the index of the first marker on its horizontal band (vertical centre inside the video,
- * horizontally within reach), or -1 when it has none. A marker with an empty box is not rendered (it sits in a
- * hidden part of the page, such as the home feed kept behind Reels) and matches nothing.
+ * horizontally within reach) that `belongs` to it, or -1 when it has none. A marker with an empty box is not
+ * rendered (it sits in a hidden part of the page, such as the home feed kept behind Reels) and matches nothing.
  */
-export function matchAds(videos: Box[], markers: Box[]): number[] {
-  return videos.map((v) =>
-    markers.findIndex((m) => {
+export function matchAds(
+  videos: Box[],
+  markers: Box[],
+  belongs: (video: number, marker: number) => boolean = () => true,
+): number[] {
+  return videos.map((v, vi) =>
+    markers.findIndex((m, mi) => {
       if (m.bottom <= m.top || m.right <= m.left) return false;
       const y = (m.top + m.bottom) / 2;
-      return y >= v.top && y <= v.bottom && m.right >= v.left - SIDE_REACH && m.left <= v.right + SIDE_REACH;
+      const near = y >= v.top && y <= v.bottom && m.right >= v.left - SIDE_REACH && m.left <= v.right + SIDE_REACH;
+      return near && belongs(vi, mi);
     }),
   );
 }

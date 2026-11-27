@@ -40,3 +40,13 @@ test('matchAds: a marker that is not rendered matches nothing', () => {
   const videos = [{ top: -20, bottom: 606, left: 350, right: 1022 }];
   assert.deepEqual(matchAds(videos, [{ top: 0, bottom: 0, left: 0, right: 0 }]), [-1]);
 });
+
+test('matchAds: a marker on the band that belongs to another part of the page is skipped', () => {
+  // A reel opened over the home feed: a feed post's label lines up with the reel but is not its ad.
+  const videos = [{ top: 16, bottom: 750, left: 408, right: 822 }];
+  const feedLabel = { top: 300, bottom: 314, left: 120, right: 180 };
+  const ownLabel = { top: 700, bottom: 714, left: 100, right: 120 };
+  assert.deepEqual(matchAds(videos, [feedLabel]), [0], 'geometry alone would match it');
+  assert.deepEqual(matchAds(videos, [feedLabel], () => false), [-1]);
+  assert.deepEqual(matchAds(videos, [feedLabel, ownLabel], (_v, m) => m === 1), [1]);
+});

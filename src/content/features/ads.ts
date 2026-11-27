@@ -34,17 +34,20 @@ export function ads(ctx: Ctx): void {
     return found;
   }
 
-  /** The ad's own container: the closest common ancestor of the video and its marker, if it is reel-sized. */
-  function adBox(video: HTMLVideoElement, marker: Element, rect: DOMRect): HTMLElement {
+  /**
+   * The reel that `marker` belongs to: the closest common ancestor of the video and the marker, if it is reel-sized
+   * and holds no other video. Anything bigger means the marker only happens to line up with the video, like a
+   * "Sponsored" label on the home feed behind a reel opened on top of it, and it is not this reel's ad.
+   */
+  function reelBox(video: HTMLVideoElement, marker: Element, rect: DOMRect): HTMLElement | null {
     let box: HTMLElement | null = video.parentElement;
     while (box && !box.contains(marker)) box = box.parentElement;
-    const r = box?.getBoundingClientRect();
-    return box && r && r.height <= rect.height * 1.6 ? box : video;
+    if (!box || box.getElementsByTagName('video').length !== 1) return null;
+    return box.getBoundingClientRect().height <= rect.height * 1.6 ? box : null;
   }
 
-  function hide(video: HTMLVideoElement, marker: Element, rect: DOMRect): void {
+  function hide(video: HTMLVideoElement, box: HTMLElement): void {
     if (!hidden.has(video)) {
-      const box = adBox(video, marker, rect);
       hidden.set(video, { box, muted: video.muted });
       // Opacity keeps the element hit-testable, so the runtime still sees it as the reel on screen.
       box.style.setProperty('opacity', '0', 'important');
@@ -66,11 +69,16 @@ export function ads(ctx: Ctx): void {
     const rects = list.map((v) => v.getBoundingClientRect());
     const found = markers();
     const boxes: Box[] = found.map((m) => m.getBoundingClientRect());
-    const matches = matchAds(rects, boxes);
+    const owner = (vi: number, mi: number): HTMLElement | null => {
+      const video = list[vi];
+      const marker = found[mi];
+      const rect = rects[vi];
+      return video && marker && rect ? reelBox(video, marker, rect) : null;
+    };
+    const matches = matchAds(rects, boxes, (vi, mi) => owner(vi, mi) !== null);
     list.forEach((video, i) => {
-      const marker = found[matches[i] ?? -1];
-      const rect = rects[i];
-      if (marker && rect) hide(video, marker, rect);
+      const box = owner(i, matches[i] ?? -1);
+      if (box) hide(video, box);
       else restore(video);
     });
     for (const video of hidden.keys()) if (!video.isConnected) hidden.delete(video);
