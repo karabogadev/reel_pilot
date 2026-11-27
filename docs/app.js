@@ -69,8 +69,8 @@
 
   /** Strings the demo builds at runtime. */
   const LIVE = {
-    en: { autoOn: 'Auto-advance on', autoOff: 'Auto-advance off', seconds: 's' },
-    tr: { autoOn: 'Otomatik geçiş açık', autoOff: 'Otomatik geçiş kapalı', seconds: 'sn' },
+    en: { autoOn: 'Auto-advance on', autoOff: 'Auto-advance off', seconds: 's', adSkipped: 'Ad skipped' },
+    tr: { autoOn: 'Otomatik geçiş açık', autoOff: 'Otomatik geçiş kapalı', seconds: 'sn', adSkipped: 'Reklam geçildi' },
   };
 
   const STORAGE_KEY = 'reel-pilot-lang';
@@ -135,6 +135,7 @@
 
   const DURATION = 8; // seconds per demo reel at 1x
   const SEEK_STEP = 2;
+  const AD_GLIMPSE_MS = 700; // long enough to see what was skipped
   const END_GUARD = 0.25;
   const slides = [...stage.querySelectorAll('.slide')];
   const fill = document.getElementById('fill');
@@ -143,7 +144,7 @@
   const autoButton = document.getElementById('auto');
   const toastEl = document.getElementById('toast');
 
-  const state = { index: 0, time: 0, speed: 1, auto: true, visible: true, dragging: false };
+  const state = { index: 0, time: 0, speed: 1, auto: true, visible: true, dragging: false, skipping: false };
   const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
   let toastTimer = 0;
 
@@ -167,6 +168,14 @@
     state.index = (state.index + 1) % slides.length;
     state.time = 0;
     renderSlides();
+    if (!('ad' in slides[state.index].dataset)) return;
+    // Like the extension: the ad never plays, the feed moves straight past it.
+    state.skipping = true;
+    setTimeout(() => {
+      toast(LIVE[lang].adSkipped);
+      state.skipping = false;
+      advance();
+    }, AD_GLIMPSE_MS);
   }
 
   function setSpeed(speed) {
@@ -258,7 +267,7 @@
     requestAnimationFrame(tick);
     const dt = Math.min(0.1, (now - last) / 1000);
     last = now;
-    if (!state.visible || state.dragging) return render();
+    if (!state.visible || state.dragging || state.skipping) return render();
     state.time += dt * state.speed;
     if (state.time >= DURATION) {
       if (state.auto) advance();

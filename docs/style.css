@@ -309,6 +309,33 @@ code {
     linear-gradient(180deg, #8fd3f4 0%, #3aa0c8 55%, #0c5577 100%);
 }
 
+/* The ad reel in the demo: Instagram's ad label and button, over a product shot. */
+.sad {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0 14px 26px;
+  background:
+    radial-gradient(circle at 50% 40%, #f4e3c8 0 20%, transparent 20.5%),
+    radial-gradient(circle at 50% 40%, #8a5a36 0 24%, transparent 24.5%),
+    linear-gradient(180deg, #c9b8a6, #6f5a4a);
+  font-size: 13px;
+}
+
+.ad-cta {
+  display: flex;
+  justify-content: space-between;
+  padding: 11px 13px;
+  border-radius: 10px;
+  background: rgb(30 30 34 / 0.85);
+}
+
+.ad-label {
+  font-weight: 500;
+  opacity: 0.85;
+}
+
 .s3 {
   background:
     radial-gradient(circle at 22% 30%, #ffe08a 0 3%, transparent 3.5%),
