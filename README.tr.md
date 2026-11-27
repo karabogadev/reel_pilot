@@ -58,7 +58,7 @@ katmanını kullanır. Ayarlar `chrome.storage.local`'da durur; popup ve sayfa i
 | --- | --- |
 | `src/core.js` | Saf mantık; content script, popup ve testler ortak kullanır |
 | `src/overlay.js` | Sayfa içi arayüz |
-| `src/content.js` | Bağlantılar |
+| `src/content.js` | Parçaları birbirine bağlar |
 | `popup/` | Ayarlar |
 | `docs/` | [Web sitesi](https://karabogadev.github.io/reel_pilot/) (GitHub Pages) |
 
