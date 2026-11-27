@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Reel Pilot",
+  "version": "0.1.0",
+  "description": "Instagram Reels için otomatik geçiş, ileri/geri sarma ve hız kontrolü.",
+  "permissions": ["storage"],
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_title": "Reel Pilot",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.instagram.com/*"],
+      "js": ["src/core.js", "src/overlay.js", "src/content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

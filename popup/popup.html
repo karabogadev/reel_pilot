@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Reel Pilot</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <img src="../icons/icon-48.png" width="24" height="24" alt="" />
+      <h1>Reel Pilot</h1>
+    </header>
+
+    <label class="row">
+      <span class="label">Otomatik geçiş<small>Reel bitince sonrakine geç</small></span>
+      <input type="checkbox" id="autoAdvance" class="switch" />
+    </label>
+
+    <label class="row">
+      <span class="label">Kaç kez oynasın<small>Geçmeden önce</small></span>
+      <select id="loops">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+    </label>
+
+    <div class="row column">
+      <div class="line">
+        <span class="label">Hız</span>
+        <output id="speedValue">1x</output>
+        <button type="button" id="speedReset">1x</button>
+      </div>
+      <input type="range" id="speed" min="0.25" max="4" step="0.25" aria-label="Hız" />
+    </div>
+
+    <label class="row">
+      <span class="label">Sarma adımı</span>
+      <select id="seekStep">
+        <option value="2">2 sn</option>
+        <option value="5">5 sn</option>
+        <option value="10">10 sn</option>
+        <option value="15">15 sn</option>
+      </select>
+    </label>
+
+    <label class="row">
+      <span class="label">Klavye kısayolları</span>
+      <input type="checkbox" id="shortcuts" class="switch" />
+    </label>
+
+    <dl class="keys" id="keys">
+      <dt><kbd>←</kbd><kbd>→</kbd></dt>
+      <dd>Geri / ileri sar</dd>
+      <dt><kbd>S</kbd><kbd>D</kbd></dt>
+      <dd>Yavaşlat / hızlandır</dd>
+      <dt><kbd>R</kbd></dt>
+      <dd>Hızı 1x yap</dd>
+      <dt><kbd>A</kbd></dt>
+      <dd>Otomatik geçiş aç/kapa</dd>
+    </dl>
+
+    <script src="../src/core.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
