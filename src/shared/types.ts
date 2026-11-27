@@ -1,3 +1,7 @@
+export type Lang = 'tr' | 'en';
+/** 'auto' follows the browser's language. */
+export type LangSetting = Lang | 'auto';
+
 /** User settings, stored under the `settings` key in chrome.storage.local. */
 export interface Settings {
   autoAdvance: boolean;
@@ -11,6 +15,8 @@ export interface Settings {
   stopAfterReels: number;
   /** Take a break after this many minutes of playback; 0 turns the limit off. */
   stopAfterMinutes: number;
+  /** Language of the popup and the in-page UI. */
+  lang: LangSetting;
 }
 
 export interface Route {

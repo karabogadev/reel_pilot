@@ -1,4 +1,4 @@
-import type { Settings } from '../shared/types.ts';
+import type { LangSetting, Settings } from '../shared/types.ts';
 
 export const SPEED_MIN = 0.25;
 export const SPEED_MAX = 4;
@@ -12,7 +12,10 @@ export const DEFAULTS: Readonly<Settings> = Object.freeze({
   shortcuts: true,
   stopAfterReels: 0,
   stopAfterMinutes: 0,
+  lang: 'auto',
 });
+
+const LANG_SETTINGS: readonly LangSetting[] = ['auto', 'tr', 'en'];
 
 export const clamp = (n: number, lo: number, hi: number): number => Math.min(hi, Math.max(lo, n));
 
@@ -41,5 +44,6 @@ export function normalizeSettings(raw: unknown): Settings {
     shortcuts: typeof r.shortcuts === 'boolean' ? r.shortcuts : DEFAULTS.shortcuts,
     stopAfterReels: int(r.stopAfterReels, 0, 500, DEFAULTS.stopAfterReels),
     stopAfterMinutes: int(r.stopAfterMinutes, 0, 600, DEFAULTS.stopAfterMinutes),
+    lang: LANG_SETTINGS.includes(r.lang as LangSetting) ? (r.lang as LangSetting) : DEFAULTS.lang,
   };
 }

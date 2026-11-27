@@ -38,6 +38,7 @@ test('normalizeSettings: keeps valid values, repairs invalid ones', () => {
     shortcuts: false,
     stopAfterReels: 20,
     stopAfterMinutes: 15,
+    lang: 'en' as const,
   };
   assert.deepEqual(normalizeSettings(valid), valid);
   assert.deepEqual(
@@ -49,11 +50,13 @@ test('normalizeSettings: keeps valid values, repairs invalid ones', () => {
   assert.equal(normalizeSettings({ seekStep: 500 }).seekStep, 30);
   assert.equal(normalizeSettings({ stopAfterReels: -4 }).stopAfterReels, 0);
   assert.equal(normalizeSettings({ stopAfterMinutes: 'x' }).stopAfterMinutes, 0);
+  assert.equal(normalizeSettings({ lang: 'de' }).lang, 'auto');
+  assert.equal(normalizeSettings({ lang: 'tr' }).lang, 'tr');
 });
 
 test('normalizeSettings: settings saved by v0.1 gain the new fields', () => {
   const v01 = { autoAdvance: true, loops: 2, speed: 1.5, seekStep: 5, shortcuts: true };
-  assert.deepEqual(normalizeSettings(v01), { ...v01, stopAfterReels: 0, stopAfterMinutes: 0 });
+  assert.deepEqual(normalizeSettings(v01), { ...v01, stopAfterReels: 0, stopAfterMinutes: 0, lang: 'auto' });
 });
 
 test('formatTime', () => {
