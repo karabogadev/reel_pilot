@@ -5,7 +5,7 @@
 <h1 align="center">Reel Pilot</h1>
 
 <p align="center">
-  Web'deki Instagram Reels için otomatik geçiş, ilerleme çubuğu ve 0.25x–4x hız.<br />
+  Web'deki Instagram Reels için otomatik geçiş, ilerleme çubuğu, 0.25x–4x hız ve izleme araçları.<br />
   <a href="https://karabogadev.github.io/reel_pilot/">Web sitesi</a> ·
   <a href="https://github.com/karabogadev/reel_pilot/releases/latest/download/reel-pilot.zip">İndir</a> ·
   <a href="README.md">English</a> | <b>Türkçe</b>
@@ -19,7 +19,10 @@ masaüstünde eksik olan kontrollerini ekler:
 - **Otomatik geçiş.** Reel bitince sonrakine kaydırır. Her reel, geçmeden önce 1–5 kez oynayabilir.
 - **Sarma.** Her reel'in alt kenarında sürüklenebilir bir ilerleme çubuğu (üstüne gelince süre görünür) ve klavyeyle
   sarma.
-- **Hız.** 0.25x–4x; hatırlanır ve sonraki her reel'e uygulanır.
+- **Hız.** 0.25x–4x; hatırlanır ve sonraki her reel'e uygulanır. `F`'ye basılı tutunca hız iki katına çıkar.
+- **İzleme araçları.** Kare kare ilerle, o anki kareyi resim olarak kopyala, reel'in bir bölümünü döngüye al (A-B
+  döngü) ya da sonrakine geçmeden bir reel'de kal.
+- **Mola hatırlatıcı.** Seçtiğin sayıda reel ya da dakika sonunda durur; devam et diyene kadar bekler.
 
 ## Kurulum
 
@@ -38,15 +41,23 @@ Güncellemek için klasörü yeni sürümle değiştir ve eklenti kartındaki ye
 | `←` / `→` | Geri / ileri sar (yalnızca Reels akışında) |
 | `S` / `D` | Yavaşlat / hızlandır |
 | `R` | Hızı 1x yap |
+| `F` (basılı) | Basılı tuttukça iki kat hız |
+| `,` / `.` | Önceki / sonraki kare (reel'i duraklatır) |
+| `C` | O anki kareyi kopyala (pano engelliyse indirir) |
+| `[` / `]` / `\` | A-B döngü: başlangıç / bitiş / temizle |
 | `A` | Otomatik geçişi aç/kapa (yalnızca Reels akışında) |
+| `K` | Bu reel'de kal (yalnızca Reels akışında) |
 
-Yazı yazarken kısayollar devre dışıdır; popup'tan tamamen kapatılabilir. Sarma adımı (2–15 sn) da oradan ayarlanır.
+Yazı yazarken kısayollar devre dışıdır; popup'tan tamamen kapatılabilir. Sarma adımı (2–15 sn) ve mola hatırlatıcı da
+oradan ayarlanır.
 
 ## Gizlilik
 
 - Yalnızca `instagram.com`'da çalışır, Hikâyeler'de kapalı kalır.
 - İstediği tek izin `storage`; ayarlarını tarayıcıda saklamak için.
 - Ağ isteği yok, analitik yok, hesap yok.
+- Popup'taki **Tanılama kopyala**, hata bildirimi için panoya bir rapor kopyalar. Raporda URL, reel kodu ya da hesap
+  adı yoktur ve hiçbir yere gönderilmez.
 
 ## Nasıl çalışır
 
@@ -56,28 +67,34 @@ katmanını kullanır. Ayarlar `chrome.storage.local`'da durur; popup ve sayfa i
 
 | Yol | Ne |
 | --- | --- |
-| `src/core.js` | Saf mantık; content script, popup ve testler ortak kullanır |
-| `src/overlay.js` | Sayfa içi arayüz |
-| `src/content.js` | Parçaları birbirine bağlar |
-| `popup/` | Ayarlar |
+| `src/core/` | Saf mantık (ayarlar, tuşlar, oynatma, rota); testler bunu kapsar |
+| `src/content/runtime.ts` | Aktif video, hız, otomatik geçiş ve kare döngüsü |
+| `src/content/overlay.ts` | Sayfa içi arayüz |
+| `src/content/features/` | İzleme araçları ve mola hatırlatıcı; runtime'ın üstüne kurulu |
+| `src/pages/popup/` | Ayarlar |
 | `docs/` | [Web sitesi](https://karabogadev.github.io/reel_pilot/) (GitHub Pages) |
 
 ## Geliştirme
 
-**Paketlenmemiş öğe yükle** ile doğrudan repo klasörünü yükle. Kodu değiştirdikten sonra eklenti kartındaki yenile
-düğmesine bas ve Instagram sekmesini yenile.
+TypeScript; esbuild ile `dist/`'e paketlenir. Testler TypeScript'i doğrudan çalıştırdığı için Node 22.18 ya da
+üstü gerekir.
 
 ```sh
-node --test                  # src/core.js birim testleri
-node scripts/make-icons.mjs  # ikonları yeniden üret
+npm install
+npm run build   # dist/'e paketle (npm run dev değişiklikte yeniden paketler)
+npm run check   # tip kontrolü, lint ve testler
 ```
 
-Sürüm çıkarmak için yalnızca eklenti dosyalarını zip'le ve sabit bir adla ekle; böylece yukarıdaki indirme bağlantısı
-hep en son sürümü gösterir:
+**Paketlenmemiş öğe yükle** ile `dist/` klasörünü yükle. Yeniden paketledikten sonra eklenti kartındaki yenile
+düğmesine bas ve Instagram sekmesini yenile.
+
+Sürüm çıkarmak için `package.json`'daki `version`'ı artır (build onu manifest'e kopyalar), sonra `dist/`'in içeriğini
+sabit bir adla zip'le; böylece yukarıdaki indirme bağlantısı hep en son sürümü gösterir:
 
 ```sh
-zip -r reel-pilot.zip manifest.json icons popup src
-gh release create v0.1.0 reel-pilot.zip
+npm run check && npm run build
+(cd dist && zip -r ../reel-pilot.zip .)
+gh release create v0.2.0 reel-pilot.zip
 ```
 
 ---
