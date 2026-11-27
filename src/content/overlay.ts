@@ -1,6 +1,7 @@
 /**
  * In-page UI.
  * Stays out of Instagram's DOM tree: a single fixed host appended to <html>, with a Shadow DOM.
+ * In full screen it moves into the full-screen element, the only part of the page still drawn.
  * Every frame it is aligned to the active video's on-screen rectangle.
  */
 import { formatTime } from '../core/format.ts';
@@ -79,6 +80,8 @@ const CSS = `
 
 const ICON_CHEVRONS = 'M6 5l6 6 6-6M6 13l6 6 6-6';
 const ICON_LOCK = 'M7 11V8a5 5 0 0110 0v3M6 11h12v9H6z';
+const ICON_EXPAND = 'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5';
+const ICON_COLLAPSE = 'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5';
 
 type Child = Node | string;
 
@@ -113,6 +116,7 @@ export interface OverlayHandlers {
   onSpeedReset(): void;
   onToggleAuto(): void;
   onToggleLock(): void;
+  onToggleFullscreen(): void;
 }
 
 export interface OverlayState {
@@ -136,6 +140,9 @@ export interface Overlay {
   hide(): void;
   setState(state: OverlayState): void;
   setLock(on: boolean): void;
+  setFullscreen(on: boolean): void;
+  /** Moves the UI into `parent`; it puts itself back there if Instagram's rendering drops it. */
+  mount(parent: Element): void;
   setLoop(loop: AbLoop | null): void;
   toast(text: string): void;
   /** A sticky chip at the top of the video, shown until cleared with null. */
@@ -161,7 +168,9 @@ export function createOverlay(handlers: OverlayHandlers): Overlay {
   const autoLabel = document.createTextNode('');
   const auto = el('button', { class: 'toggle auto', tabindex: '-1', 'aria-pressed': 'false' }, [icon(ICON_CHEVRONS), autoLabel]);
   const lock = el('button', { class: 'toggle lock', tabindex: '-1', 'aria-pressed': 'false' }, [icon(ICON_LOCK)]);
-  const pill = el('div', { class: 'pill' }, [slower, speed, faster, sep, auto, lock]);
+  const fullIcon = icon(ICON_EXPAND);
+  const full = el('button', { class: 'toggle full', tabindex: '-1', 'aria-pressed': 'false' }, [fullIcon]);
+  const pill = el('div', { class: 'pill' }, [slower, speed, faster, sep, auto, lock, full]);
 
   const fill = el('div', { class: 'fill' });
   const range = el('div', { class: 'range', hidden: '' });
@@ -179,7 +188,8 @@ export function createOverlay(handlers: OverlayHandlers): Overlay {
 
   const rootEl = el('div', { class: 'root', hidden: '' }, [pill, badgeEl, toastEl, bannerEl, bar]);
   shadow.append(rootEl);
-  document.documentElement.append(host);
+  let parent: Element = document.documentElement;
+  parent.append(host);
 
   const listeners = new AbortController();
   const last = { x: NaN, y: NaN, w: NaN, h: NaN, p: NaN, hot: false, marks: '' };
@@ -213,6 +223,7 @@ export function createOverlay(handlers: OverlayHandlers): Overlay {
   speed.addEventListener('click', () => handlers.onSpeedReset());
   auto.addEventListener('click', () => handlers.onToggleAuto());
   lock.addEventListener('click', () => handlers.onToggleLock());
+  full.addEventListener('click', () => handlers.onToggleFullscreen());
   bannerButton.addEventListener('click', () => onBannerAction?.());
 
   const ratioOf = (e: PointerEvent): number => clamp((e.clientX - geom.left) / geom.width, 0, 1);
@@ -270,6 +281,7 @@ export function createOverlay(handlers: OverlayHandlers): Overlay {
   }
 
   function frame(rect: DOMRect, currentTime: number, duration: number): void {
+    if (host.parentNode !== parent) parent.append(host);
     if (rect.width <= 0 || rect.bottom <= 0 || rect.top >= window.innerHeight) return hide();
     if (rootEl.hidden) rootEl.hidden = false;
 
@@ -313,21 +325,27 @@ export function createOverlay(handlers: OverlayHandlers): Overlay {
   }
 
   let feed = false;
+  let fullscreen = false;
   let text: Messages | null = null;
+
+  const label = (button: HTMLElement, name: string, key: string): void => {
+    button.title = `${name} (${key})`;
+    button.setAttribute('aria-label', name);
+  };
+  const labelFull = (): void => {
+    if (text) label(full, fullscreen ? text.exitFullscreen : text.fullscreen, 'T');
+  };
 
   function setText(next: Messages): void {
     if (next === text) return;
     text = next;
-    const label = (button: HTMLElement, name: string, key: string): void => {
-      button.title = `${name} (${key})`;
-      button.setAttribute('aria-label', name);
-    };
     label(slower, next.slower, 'S');
     label(faster, next.faster, 'D');
     speed.title = `${next.resetSpeed} (R)`;
     auto.title = `${next.autoAdvance} (A)`;
     autoLabel.data = next.autoShort;
     label(lock, next.stayOnReel, 'K');
+    labelFull();
   }
 
   return {
@@ -341,11 +359,20 @@ export function createOverlay(handlers: OverlayHandlers): Overlay {
       auto.setAttribute('aria-pressed', String(state.autoAdvance));
       auto.hidden = !feed;
       lock.hidden = !feed;
-      sep.hidden = !feed;
     },
     setLock(on) {
       lock.setAttribute('aria-pressed', String(on));
       rootEl.classList.toggle('locked', on);
+    },
+    setFullscreen(on) {
+      fullscreen = on;
+      full.setAttribute('aria-pressed', String(on));
+      fullIcon.firstElementChild?.setAttribute('d', on ? ICON_COLLAPSE : ICON_EXPAND);
+      labelFull();
+    },
+    mount(next) {
+      parent = next;
+      if (host.parentNode !== parent) parent.append(host);
     },
     setLoop(next) {
       loop = next;

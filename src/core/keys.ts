@@ -11,7 +11,8 @@ export type Action =
   | { type: 'loopA' }
   | { type: 'loopB' }
   | { type: 'loopClear' }
-  | { type: 'toggleLock' };
+  | { type: 'toggleLock' }
+  | { type: 'toggleFullscreen' };
 
 export interface KeyLike {
   code: string;
@@ -65,6 +66,8 @@ export function keyAction(ev: KeyLike, route: Route): Action | null {
       return once({ type: 'loopClear' });
     case 'KeyK':
       return route.feed ? once({ type: 'toggleLock' }) : null;
+    case 'KeyT':
+      return once({ type: 'toggleFullscreen' });
     default:
       return null;
   }

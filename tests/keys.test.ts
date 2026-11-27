@@ -53,12 +53,14 @@ test('keyAction: viewing pack shortcuts', () => {
   assert.deepEqual(keyAction({ code: 'BracketRight' }, feed), { type: 'loopB' });
   assert.deepEqual(keyAction({ code: 'Backslash' }, feed), { type: 'loopClear' });
   assert.deepEqual(keyAction({ code: 'KeyK' }, feed), { type: 'toggleLock' });
+  assert.deepEqual(keyAction({ code: 'KeyT' }, feed), { type: 'toggleFullscreen' });
 });
 
 test('keyAction: one-shot actions ignore key repeat; the lock is feed-only', () => {
-  for (const code of ['KeyC', 'BracketLeft', 'BracketRight', 'Backslash', 'KeyK']) {
+  for (const code of ['KeyC', 'BracketLeft', 'BracketRight', 'Backslash', 'KeyK', 'KeyT']) {
     assert.equal(keyAction({ code, repeat: true }, feed), null);
   }
   assert.equal(keyAction({ code: 'KeyK' }, post), null);
   assert.deepEqual(keyAction({ code: 'KeyC' }, post), { type: 'copyFrame' });
+  assert.deepEqual(keyAction({ code: 'KeyT' }, post), { type: 'toggleFullscreen' }, 'full screen works on posts too');
 });

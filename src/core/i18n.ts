@@ -20,6 +20,8 @@ const en = {
   autoAdvance: 'Auto-advance',
   autoShort: 'Auto',
   stayOnReel: 'Stay on this reel',
+  fullscreen: 'Full screen',
+  exitFullscreen: 'Exit full screen',
 
   // Toasts
   seek: (dir: 1 | -1, seconds: number) => `${dir > 0 ? '+' : '−'}${seconds} s`,
@@ -80,6 +82,8 @@ const tr: Messages = {
   autoAdvance: 'Otomatik geçiş',
   autoShort: 'Oto',
   stayOnReel: 'Bu reel’de kal',
+  fullscreen: 'Tam ekran',
+  exitFullscreen: 'Tam ekrandan çık',
 
   seek: (dir, seconds) => `${dir > 0 ? '+' : '−'}${seconds} sn`,
   autoAdvanceState: (on) => `Otomatik geçiş ${on ? 'açık' : 'kapalı'}`,

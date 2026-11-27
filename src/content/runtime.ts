@@ -38,6 +38,8 @@ export interface Ctx {
   route(): Route;
   seekTo(time: number): void;
   setBoost(on: boolean): void;
+  /** The element that scrolls the feed `video` sits in, if any. */
+  scroller(video: HTMLVideoElement): HTMLElement | null;
   /** Jumps past `video` right away, down (1) or up (-1) the feed. */
   skip(video: HTMLVideoElement, dir: 1 | -1): void;
   /** Runs when a shortcut or a button triggers `type`. */
@@ -87,6 +89,7 @@ export function createRuntime(version: string): Runtime {
     onSpeedReset: () => dispatch({ type: 'resetSpeed' }),
     onToggleAuto: () => dispatch({ type: 'toggleAuto' }),
     onToggleLock: () => dispatch({ type: 'toggleLock' }),
+    onToggleFullscreen: () => dispatch({ type: 'toggleFullscreen' }),
   });
 
   // ---- Settings -------------------------------------------------------------
@@ -418,6 +421,7 @@ export function createRuntime(version: string): Runtime {
     route,
     seekTo,
     setBoost,
+    scroller: (v) => scrollContext(v)?.scroller ?? null,
     skip,
     handle: (type, handler) => void handlers.set(type, handler as (action: Action) => void),
     gate: (reason) => void gates.push(reason),
