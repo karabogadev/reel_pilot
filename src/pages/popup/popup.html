@@ -6,18 +6,23 @@
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
+    <!-- Text comes from src/core/i18n.ts: data-i18n sets the text, data-i18n-aria the aria-label. -->
     <header>
       <img src="../icons/icon-48.png" width="24" height="24" alt="" />
       <h1>Reel Pilot</h1>
+      <div class="lang" role="group" data-i18n-aria="language">
+        <button type="button" data-lang="tr">TR</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
     </header>
 
     <label class="row">
-      <span class="label">Otomatik geçiş<small>Reel bitince sonrakine geç</small></span>
+      <span class="label"><span data-i18n="autoAdvance"></span><small data-i18n="autoAdvanceHint"></small></span>
       <input type="checkbox" id="autoAdvance" class="switch" />
     </label>
 
     <label class="row">
-      <span class="label">Kaç kez oynasın<small>Geçmeden önce</small></span>
+      <span class="label"><span data-i18n="loops"></span><small data-i18n="loopsHint"></small></span>
       <select id="loops">
         <option value="1">1</option>
         <option value="2">2</option>
@@ -29,73 +34,73 @@
 
     <div class="row column">
       <div class="line">
-        <span class="label">Hız</span>
+        <span class="label" data-i18n="speed"></span>
         <output id="speedValue">1x</output>
         <button type="button" id="speedReset">1x</button>
       </div>
-      <input type="range" id="speed" min="0.25" max="4" step="0.25" aria-label="Hız" />
+      <input type="range" id="speed" min="0.25" max="4" step="0.25" data-i18n-aria="speed" />
     </div>
 
     <label class="row">
-      <span class="label">Sarma adımı</span>
+      <span class="label" data-i18n="seekStep"></span>
       <select id="seekStep">
-        <option value="2">2 sn</option>
-        <option value="5">5 sn</option>
-        <option value="10">10 sn</option>
-        <option value="15">15 sn</option>
+        <option value="2"></option>
+        <option value="5"></option>
+        <option value="10"></option>
+        <option value="15"></option>
       </select>
     </label>
 
     <div class="row">
-      <span class="label">Mola hatırlat<small>Reel sayısı ya da süre dolunca duraklat</small></span>
+      <span class="label"><span data-i18n="breakReminder"></span><small data-i18n="breakReminderHint"></small></span>
       <span class="pair">
-        <select id="stopAfterReels" aria-label="Reel sayısı">
-          <option value="0">Reel: kapalı</option>
-          <option value="10">10 reel</option>
-          <option value="20">20 reel</option>
-          <option value="30">30 reel</option>
-          <option value="50">50 reel</option>
+        <select id="stopAfterReels" data-i18n-aria="reelCount">
+          <option value="0"></option>
+          <option value="10"></option>
+          <option value="20"></option>
+          <option value="30"></option>
+          <option value="50"></option>
         </select>
-        <select id="stopAfterMinutes" aria-label="Süre">
-          <option value="0">Süre: kapalı</option>
-          <option value="5">5 dk</option>
-          <option value="10">10 dk</option>
-          <option value="15">15 dk</option>
-          <option value="30">30 dk</option>
-          <option value="60">60 dk</option>
+        <select id="stopAfterMinutes" data-i18n-aria="duration">
+          <option value="0"></option>
+          <option value="5"></option>
+          <option value="10"></option>
+          <option value="15"></option>
+          <option value="30"></option>
+          <option value="60"></option>
         </select>
       </span>
     </div>
 
     <label class="row">
-      <span class="label">Klavye kısayolları</span>
+      <span class="label" data-i18n="shortcuts"></span>
       <input type="checkbox" id="shortcuts" class="switch" />
     </label>
 
     <details class="shortcuts">
-      <summary>Kısayol listesi</summary>
+      <summary data-i18n="shortcutList"></summary>
       <dl class="keys" id="keys">
-      <dt><kbd>←</kbd><kbd>→</kbd></dt>
-      <dd>Geri / ileri sar</dd>
-      <dt><kbd>S</kbd><kbd>D</kbd><kbd>R</kbd></dt>
-      <dd>Yavaşlat / hızlandır / 1x</dd>
-      <dt><kbd>F</kbd></dt>
-      <dd>Basılı tut: 2 kat hız</dd>
-      <dt><kbd>,</kbd><kbd>.</kbd></dt>
-      <dd>Kare kare geri / ileri</dd>
-      <dt><kbd>C</kbd></dt>
-      <dd>Kareyi kopyala</dd>
-      <dt><kbd>[</kbd><kbd>]</kbd><kbd>\</kbd></dt>
-      <dd>A-B döngü: başla / bitir / temizle</dd>
-      <dt><kbd>A</kbd></dt>
-      <dd>Otomatik geçiş aç/kapa</dd>
-      <dt><kbd>K</kbd></dt>
-      <dd>Bu reel'de kal</dd>
+        <dt><kbd>←</kbd><kbd>→</kbd></dt>
+        <dd data-i18n="keySeek"></dd>
+        <dt><kbd>S</kbd><kbd>D</kbd><kbd>R</kbd></dt>
+        <dd data-i18n="keySpeed"></dd>
+        <dt><kbd>F</kbd></dt>
+        <dd data-i18n="keyBoost"></dd>
+        <dt><kbd>,</kbd><kbd>.</kbd></dt>
+        <dd data-i18n="keyFrame"></dd>
+        <dt><kbd>C</kbd></dt>
+        <dd data-i18n="keyCopy"></dd>
+        <dt><kbd>[</kbd><kbd>]</kbd><kbd>\</kbd></dt>
+        <dd data-i18n="keyLoop"></dd>
+        <dt><kbd>A</kbd></dt>
+        <dd data-i18n="keyAuto"></dd>
+        <dt><kbd>K</kbd></dt>
+        <dd data-i18n="stayOnReel"></dd>
       </dl>
     </details>
 
     <footer>
-      <button type="button" id="diag">Tanılama kopyala</button>
+      <button type="button" id="diag" data-i18n="copyDiagnostics"></button>
       <span id="diagStatus" role="status"></span>
     </footer>
 
