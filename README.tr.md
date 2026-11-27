@@ -22,7 +22,9 @@ masaüstünde eksik olan kontrollerini ekler:
 - **Hız.** 0.25x–4x; hatırlanır ve sonraki her reel'e uygulanır. `F`'ye basılı tutunca hız iki katına çıkar.
 - **İzleme araçları.** Kare kare ilerle, o anki kareyi resim olarak kopyala, reel'in bir bölümünü döngüye al (A-B
   döngü) ya da sonrakine geçmeden bir reel'de kal.
-- **Mola hatırlatıcı.** Seçtiğin sayıda reel ya da dakika sonunda durur; devam et diyene kadar bekler.
+- **Tam ekran.** `T`'ye ya da reel'deki düğmeye bas: akış ekranı kaplar, otomatik geçiş devam eder.
+- **Arka planda oynatma.** İsteğe bağlı: sekme değiştirince reel durmaz. Popup'tan açılır.
+- **Mola hatırlatıcı. Seçtiğin sayıda reel ya da dakika sonunda durur; devam et diyene kadar bekler.
 - **Reklamsız.** Sponsorlu reel'ler ekrana gelir gelmez gizlenir, sesi kapatılır ve atlanır. Varsayılan olarak açık;
   popup'tan kapatabilirsin.
 
@@ -51,6 +53,7 @@ Güncellemek için klasörü yeni sürümle değiştir ve eklenti kartındaki ye
 | `[` / `]` / `\` | A-B döngü: başlangıç / bitiş / temizle |
 | `A` | Otomatik geçişi aç/kapa (yalnızca Reels akışında) |
 | `K` | Bu reel'de kal (yalnızca Reels akışında) |
+| `T` | Tam ekran aç / kapa |
 
 Yazı yazarken kısayollar devre dışıdır; popup'tan tamamen kapatılabilir. Sarma adımı (2–15 sn) ve mola hatırlatıcı da
 oradan ayarlanır.
