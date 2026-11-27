@@ -23,6 +23,10 @@ masaüstünde eksik olan kontrollerini ekler:
 - **İzleme araçları.** Kare kare ilerle, o anki kareyi resim olarak kopyala, reel'in bir bölümünü döngüye al (A-B
   döngü) ya da sonrakine geçmeden bir reel'de kal.
 - **Mola hatırlatıcı.** Seçtiğin sayıda reel ya da dakika sonunda durur; devam et diyene kadar bekler.
+- **Reklamsız.** Sponsorlu reel'ler ekrana gelir gelmez gizlenir, sesi kapatılır ve atlanır. Varsayılan olarak açık;
+  popup'tan kapatabilirsin.
+
+Arayüz Türkçe ve İngilizce. Tarayıcının dilini izler; popup'tan değiştirebilirsin.
 
 ## Kurulum
 
@@ -67,10 +71,10 @@ katmanını kullanır. Ayarlar `chrome.storage.local`'da durur; popup ve sayfa i
 
 | Yol | Ne |
 | --- | --- |
-| `src/core/` | Saf mantık (ayarlar, tuşlar, oynatma, rota); testler bunu kapsar |
+| `src/core/` | Saf mantık (ayarlar, tuşlar, oynatma, rota, reklamlar, çeviriler); testler bunu kapsar |
 | `src/content/runtime.ts` | Aktif video, hız, otomatik geçiş ve kare döngüsü |
 | `src/content/overlay.ts` | Sayfa içi arayüz |
-| `src/content/features/` | İzleme araçları ve mola hatırlatıcı; runtime'ın üstüne kurulu |
+| `src/content/features/` | İzleme araçları, mola hatırlatıcı ve reklam atlama; runtime'ın üstüne kurulu |
 | `src/pages/popup/` | Ayarlar |
 | `docs/` | [Web sitesi](https://karabogadev.github.io/reel_pilot/) (GitHub Pages) |
 

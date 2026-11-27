@@ -23,8 +23,10 @@ Instagram Reels is missing on desktop:
 - **Viewing tools.** Step frame by frame, copy the current frame as an image, loop a part of a reel (A-B loop), or
   stay on one reel instead of moving on.
 - **Break reminder.** Pauses after a number of reels or minutes you choose, until you press continue.
+- **No ads.** Sponsored reels are hidden, muted and skipped as soon as they reach the screen. On by default; switch
+  it off in the popup.
 
-> The extension's own interface (popup, in-page buttons) is in Turkish for now.
+The interface is in English and Turkish. It follows your browser's language, and you can switch it in the popup.
 
 ## Install
 
@@ -69,10 +71,10 @@ appended to `<html>`. Settings live in `chrome.storage.local`; the popup and the
 
 | Path | What it is |
 | --- | --- |
-| `src/core/` | Pure logic (settings, keys, playback, route), covered by the tests |
+| `src/core/` | Pure logic (settings, keys, playback, route, ads, translations), covered by the tests |
 | `src/content/runtime.ts` | Active video, speed, auto-advance and the frame loop |
 | `src/content/overlay.ts` | In-page UI |
-| `src/content/features/` | Viewing tools and the break reminder, built on the runtime |
+| `src/content/features/` | Viewing tools, the break reminder and ad skipping, built on the runtime |
 | `src/pages/popup/` | Settings |
 | `docs/` | The [website](https://karabogadev.github.io/reel_pilot/) (GitHub Pages) |
 
