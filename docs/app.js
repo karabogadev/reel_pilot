@@ -34,7 +34,7 @@
       'Bir reel bitince Reel Pilot sonrakine kaydırır. Önce bir daha mı izlemek istiyorsun? Her reel, geçmeden önce beş kereye kadar oynayabilir.',
     'f2.title': 'Sürüklenebilir ilerleme çubuğu',
     'f2.body':
-      'Her reel’in altında ince bir ilerleme çubuğu var. Atlamak için tıkla ya da sürükle, süreyi görmek için üstüne gel ya da ok tuşlarını kullan.',
+      'Her reel’in altında ince bir ilerleme çubuğu var. Atlamak için tıkla ya da sürükle, süreyi görmek için üstüne gel. Ok tuşlarıyla da sarabilirsin.',
     'f3.title': '0.25x’ten 4x’e her hız',
     'f3.body': 'S ve D ile hızlandır ya da yavaşlat. Seçtiğin hız, R’ye basana kadar sonraki her reel’de de geçerli olur.',
     'install.title': 'Bir dakikada kur',
@@ -54,7 +54,7 @@
     p3: 'Hiçbir yere bir şey göndermez: ağ isteği yok, analitik yok, hesap yok.',
     p4: 'Instagram’ın class adlarına ya da seçicilerine dayanmaz; küçük tasarım değişiklikleri onu kolay kolay bozmaz.',
     'foot.disclaimer': 'Reel Pilot bağımsız bir projedir; Instagram ya da Meta ile bağlantısı yoktur.',
-    'foot.source': 'Kaynak kod GitHub’da',
+    'foot.source': 'Kaynak kodu GitHub’da',
   };
 
   /** Strings the demo builds at runtime. */
