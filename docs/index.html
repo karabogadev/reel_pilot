@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title data-i18n="meta.title">Reel Pilot: auto-advance, seeking and speed for Instagram Reels</title>
+    <meta
+      name="description"
+      data-i18n-attr="content:meta.description"
+      content="A free browser extension that moves to the next reel when one ends, adds a seek bar to every reel and remembers your playback speed."
+    />
+    <meta name="color-scheme" content="dark light" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Reel Pilot" />
+    <meta
+      property="og:description"
+      content="Auto-advance, a seek bar and 0.25x–4x speed for Instagram Reels in Brave and Chrome."
+    />
+    <meta property="og:url" content="https://karabogadev.github.io/reel_pilot/" />
+    <meta property="og:image" content="https://karabogadev.github.io/reel_pilot/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="top wrap">
+      <a class="brand" href="./">
+        <img src="icon.png" width="28" height="28" alt="" />
+        Reel Pilot
+      </a>
+      <nav class="top-links">
+        <div class="lang" role="group" aria-label="Language" data-i18n-attr="aria-label:lang.label">
+          <button type="button" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" data-lang="tr" aria-pressed="false">TR</button>
+        </div>
+        <a href="https://github.com/karabogadev/reel_pilot">GitHub</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero wrap">
+        <div class="pitch">
+          <h1 data-i18n="hero.title">Reels that play themselves.</h1>
+          <p class="lede" data-i18n="hero.lede">
+            Reel Pilot adds the controls Instagram Reels is missing on the web. It moves to the next reel when one ends,
+            puts a seek bar on every video and remembers your playback speed.
+          </p>
+          <div class="actions">
+            <a class="btn primary" href="https://github.com/karabogadev/reel_pilot/releases/latest/download/reel-pilot.zip" data-i18n="hero.download">Download for Brave and Chrome</a>
+            <a class="btn" href="https://github.com/karabogadev/reel_pilot" data-i18n="hero.source">View the source</a>
+          </div>
+          <p class="fine" data-i18n="hero.fine">Free and open source. Works in any Chromium browser on desktop.</p>
+        </div>
+
+        <figure class="demo" aria-labelledby="demo-hint">
+          <div class="stage" id="stage">
+            <div class="slides" aria-hidden="true">
+              <div class="slide s1"></div>
+              <div class="slide s2"></div>
+              <div class="slide s3"></div>
+              <div class="slide s4"></div>
+              <div class="slide s5"></div>
+            </div>
+            <div class="pill">
+              <button type="button" class="step" data-act="slower" aria-label="Slower" data-i18n-attr="aria-label:demo.slower">−</button>
+              <button type="button" class="speed" data-act="reset" id="speed">1x</button>
+              <button type="button" class="step" data-act="faster" aria-label="Faster" data-i18n-attr="aria-label:demo.faster">+</button>
+              <span class="sep"></span>
+              <button type="button" class="auto" data-act="auto" aria-pressed="true" id="auto">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5l6 6 6-6M6 13l6 6 6-6" /></svg>
+                <span data-i18n="demo.auto">Auto</span>
+              </button>
+            </div>
+            <div class="toast" id="toast" role="status"></div>
+            <div class="bar" id="bar" aria-hidden="true">
+              <div class="track"><div class="fill" id="fill"></div></div>
+            </div>
+          </div>
+
+          <figcaption id="demo-hint" data-i18n="demo.hint">Try it here: press the keys or tap them.</figcaption>
+          <div class="keys">
+            <button type="button" data-key="ArrowLeft"><kbd>←</kbd><span data-i18n="key.back">Back</span></button>
+            <button type="button" data-key="ArrowRight"><kbd>→</kbd><span data-i18n="key.forward">Forward</span></button>
+            <button type="button" data-key="KeyS"><kbd>S</kbd><span data-i18n="key.slower">Slower</span></button>
+            <button type="button" data-key="KeyD"><kbd>D</kbd><span data-i18n="key.faster">Faster</span></button>
+            <button type="button" data-key="KeyR"><kbd>R</kbd><span data-i18n="key.reset">Back to 1x</span></button>
+            <button type="button" data-key="KeyA"><kbd>A</kbd><span data-i18n="key.auto">Auto-advance</span></button>
+          </div>
+        </figure>
+      </section>
+
+      <section class="features wrap" aria-labelledby="features-title">
+        <h2 id="features-title" data-i18n="features.title">Three things the web player can’t do</h2>
+        <div class="feature-list">
+          <article>
+            <h3 data-i18n="f1.title">Next reel, automatically</h3>
+            <p data-i18n="f1.body">
+              When a reel ends, Reel Pilot scrolls to the next one. Want to watch it again first? Have each reel play up
+              to five times before it moves on.
+            </p>
+          </article>
+          <article>
+            <h3 data-i18n="f2.title">A seek bar you can drag</h3>
+            <p data-i18n="f2.body">
+              A thin progress bar runs along the bottom of every reel. Click or drag it to jump, hover to see the time,
+              or use the arrow keys.
+            </p>
+          </article>
+          <article>
+            <h3 data-i18n="f3.title">Any speed from 0.25x to 4x</h3>
+            <p data-i18n="f3.body">
+              Speed up or slow down with S and D. The speed you pick carries over to every reel that follows, until you
+              press R.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="install wrap" id="install" aria-labelledby="install-title">
+        <h2 id="install-title" data-i18n="install.title">Install in a minute</h2>
+        <ol class="steps">
+          <li>
+            <h3 data-i18n="s1.title">Download and unzip</h3>
+            <p data-i18n-html="s1.body">
+              Get <a href="https://github.com/karabogadev/reel_pilot/releases/latest/download/reel-pilot.zip">reel-pilot.zip</a>
+              and unzip it somewhere you’ll keep it. The browser loads the extension from that folder.
+            </p>
+          </li>
+          <li>
+            <h3 data-i18n="s2.title">Turn on Developer mode</h3>
+            <p data-i18n-html="s2.body">
+              Open <code>brave://extensions</code> or <code>chrome://extensions</code> and switch on
+              <strong>Developer mode</strong> in the corner.
+            </p>
+          </li>
+          <li>
+            <h3 data-i18n="s3.title">Load the folder</h3>
+            <p data-i18n-html="s3.body">
+              Click <strong>Load unpacked</strong>, pick the unzipped folder, then open
+              <a href="https://www.instagram.com/reels/">instagram.com/reels</a>.
+            </p>
+          </li>
+        </ol>
+        <p class="note" data-i18n="install.note">The extension’s own buttons and settings are in Turkish for now.</p>
+      </section>
+
+      <section class="privacy wrap" aria-labelledby="privacy-title">
+        <h2 id="privacy-title" data-i18n="privacy.title">It asks for one permission</h2>
+        <ul>
+          <li data-i18n="p1">Runs only on instagram.com, and stays off on Stories.</li>
+          <li data-i18n="p2">Keeps your settings in your browser’s extension storage. That is the one permission.</li>
+          <li data-i18n="p3">Sends nothing anywhere: no network requests, no analytics, no account.</li>
+          <li data-i18n="p4">Doesn’t depend on how Instagram builds its page, so a redesign is unlikely to break it.</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="foot wrap">
+      <p data-i18n="foot.disclaimer">Reel Pilot is an independent project and is not affiliated with Instagram or Meta.</p>
+      <a href="https://github.com/karabogadev/reel_pilot" data-i18n="foot.source">Source on GitHub</a>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
