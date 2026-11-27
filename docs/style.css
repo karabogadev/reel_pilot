@@ -541,6 +541,39 @@ kbd {
   margin-top: 48px;
 }
 
+.extras {
+  margin-top: clamp(48px, 6vw, 72px);
+}
+
+.extra-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px clamp(24px, 4vw, 56px);
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+}
+
+.extra-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.extra-list .k {
+  display: flex;
+  flex: none;
+  gap: 4px;
+  min-width: 68px;
+}
+
+.extras > p {
+  max-width: 40em;
+  margin-top: 24px;
+  color: var(--muted);
+}
+
 .feature-list p,
 .steps p {
   max-width: 34em;
@@ -626,7 +659,8 @@ kbd {
   }
 
   .feature-list,
-  .steps {
+  .steps,
+  .extra-list {
     grid-template-columns: minmax(0, 1fr);
     gap: 36px;
   }

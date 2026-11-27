@@ -37,6 +37,13 @@
       'Her reel’in altında ince bir ilerleme çubuğu var. Atlamak için tıkla ya da sürükle, süreyi görmek için üstüne gel. Ok tuşlarıyla da sarabilirsin.',
     'f3.title': '0.25x’ten 4x’e her hız',
     'f3.body': 'S ve D ile hızlandır ya da yavaşlat. Seçtiğin hız, R’ye basana kadar sonraki her reel’de de geçerli olur.',
+    'extras.title': 'Ve birkaç şey daha',
+    x1: 'Basılı tut, iki kat hız',
+    x2: 'Kare kare ilerle',
+    x3: 'Kareyi resim olarak kopyala',
+    x4: 'Reel’in bir bölümünü döngüye al',
+    x5: 'Bu reel’de kal',
+    x6: 'Bir mola hatırlatıcı da seçtiğin sayıda reel ya da dakika sonunda oynatmayı durdurur ve sen devam edene kadar bekler.',
     'install.title': 'Bir dakikada kur',
     's1.title': 'İndir ve klasöre çıkar',
     's1.body':
