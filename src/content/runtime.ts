@@ -38,6 +38,8 @@ export interface Ctx {
   route(): Route;
   seekTo(time: number): void;
   setBoost(on: boolean): void;
+  /** Jumps past `video` right away, down (1) or up (-1) the feed. */
+  skip(video: HTMLVideoElement, dir: 1 | -1): void;
   /** Runs when a shortcut or a button triggers `type`. */
   handle<T extends Action['type']>(type: T, handler: Handler<T>): void;
   /** Auto-advance asks every gate at the end of a reel; a non-null reason keeps the reel on screen. */
@@ -57,7 +59,7 @@ export function createRuntime(version: string): Runtime {
   const videos = document.getElementsByTagName('video'); // live collection
   const unlooped = new WeakSet<HTMLVideoElement>(); // videos whose loop we turned off
   const rateFix = { since: 0, count: 0 };
-  const stats = { ended: 0, advances: 0, scrollIntoViewFallbacks: 0, endOfFeedReplays: 0, loopForced: 0, rateFixes: 0, sourceSwaps: 0 };
+  const stats = { ended: 0, advances: 0, skips: 0, scrollIntoViewFallbacks: 0, endOfFeedReplays: 0, loopForced: 0, rateFixes: 0, sourceSwaps: 0 };
   const lifetime = new AbortController();
   const handlers = new Map<string, (action: Action) => void>();
   const gates: Array<() => string | null> = [];
@@ -235,31 +237,43 @@ export function createRuntime(version: string): Runtime {
     return null;
   }
 
-  function advance(v: HTMLVideoElement): void {
-    const behavior: ScrollBehavior = document.hidden ? 'instant' : 'smooth';
-    const stuck = (): boolean => v.isConnected && v.ended && centeredVideo() === v;
-    stats.advances += 1;
-
+  /**
+   * Scrolls the feed one reel past `v`. If the reel is still on screen after each try (`stuck`), falls back to
+   * scrolling the neighbouring video into view, and finally hands over to `atEnd`.
+   */
+  function scrollOn(v: HTMLVideoElement, dir: 1 | -1, behavior: ScrollBehavior, stuck: () => boolean, atEnd: () => void): void {
     const ctx = scrollContext(v);
     if (ctx) {
       // scroll-snap settles on the next reel; this works even if the next video is not rendered yet.
       const step = ctx.slide.getBoundingClientRect().height || ctx.scroller.clientHeight;
-      ctx.scroller.scrollBy({ top: step, behavior });
+      ctx.scroller.scrollBy({ top: dir * step, behavior });
     }
     setTimeout(() => {
       if (!stuck()) return;
       const list = Array.from(videos);
-      const next = list[list.indexOf(v) + 1];
+      const next = list[list.indexOf(v) + dir];
       if (next) {
         stats.scrollIntoViewFallbacks += 1;
         next.scrollIntoView({ behavior, block: 'center' });
       }
-      setTimeout(() => {
-        if (!stuck()) return;
-        stats.endOfFeedReplays += 1;
-        replay(v); // end of the feed: keep looping and try again on the next end
-      }, ADVANCE_CHECK_MS);
+      setTimeout(() => stuck() && atEnd(), ADVANCE_CHECK_MS);
     }, ADVANCE_CHECK_MS);
+  }
+
+  function advance(v: HTMLVideoElement): void {
+    stats.advances += 1;
+    const behavior: ScrollBehavior = document.hidden ? 'instant' : 'smooth';
+    const stuck = (): boolean => v.isConnected && v.ended && centeredVideo() === v;
+    scrollOn(v, 1, behavior, stuck, () => {
+      stats.endOfFeedReplays += 1;
+      replay(v); // end of the feed: keep looping and try again on the next end
+    });
+  }
+
+  function skip(v: HTMLVideoElement, dir: 1 | -1): void {
+    stats.skips += 1;
+    const stuck = (): boolean => v.isConnected && centeredVideo() === v;
+    scrollOn(v, dir, 'instant', stuck, () => {}); // nothing past it: it stays hidden and paused
   }
 
   function onEnded(e: Event): void {
@@ -404,6 +418,7 @@ export function createRuntime(version: string): Runtime {
     route,
     seekTo,
     setBoost,
+    skip,
     handle: (type, handler) => void handlers.set(type, handler as (action: Action) => void),
     gate: (reason) => void gates.push(reason),
     onReel: (listener) => void reelListeners.push(listener),
