@@ -33,3 +33,10 @@ test('matchAds: markers far to the side or between reels match nothing', () => {
   assert.deepEqual(matchAds(videos, [{ top: 700, bottom: 730, left: 400, right: 420 }]), [-1]);
   assert.deepEqual(matchAds([], [{ top: 0, bottom: 10, left: 0, right: 10 }]), []);
 });
+
+test('matchAds: a marker that is not rendered matches nothing', () => {
+  // A label left over in a hidden part of the page (the home feed after moving to Reels) has an empty box at 0,0,
+  // which sits inside the band of a reel that starts at the top of the viewport.
+  const videos = [{ top: -20, bottom: 606, left: 350, right: 1022 }];
+  assert.deepEqual(matchAds(videos, [{ top: 0, bottom: 0, left: 0, right: 0 }]), [-1]);
+});
