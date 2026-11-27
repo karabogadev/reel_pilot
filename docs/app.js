@@ -8,13 +8,13 @@
   // ---- Language -----------------------------------------------------------
 
   const TR = {
-    'meta.title': 'Reel Pilot: Instagram Reels için otomatik geçiş, sarma ve hız',
+    'meta.title': 'Reel Pilot: reklamsız Instagram Reels; otomatik geçiş, sarma ve hız',
     'meta.description':
-      'Biten reel’den sonrakine geçen, her reel’e ilerleme çubuğu ekleyen ve oynatma hızını hatırlayan ücretsiz bir tarayıcı eklentisi.',
+      'Instagram Reels’te reklamları atlayan, biten reel’den sonrakine geçen, her reel’e ilerleme çubuğu ekleyen ve oynatma hızını hatırlayan ücretsiz bir tarayıcı eklentisi.',
     'lang.label': 'Dil',
     'hero.title': 'Reels kendi kendine aksın.',
     'hero.lede':
-      'Reel Pilot, Instagram Reels’in web’de eksik olan kontrollerini ekler. Biten reel’den sonrakine geçer, her videoya bir ilerleme çubuğu koyar ve oynatma hızını hatırlar.',
+      'Reel Pilot, Instagram Reels’in web’de eksik olan kontrollerini ekler. Reklamları atlar, biten reel’den sonrakine geçer, her videoya bir ilerleme çubuğu koyar ve oynatma hızını hatırlar.',
     'hero.download': 'Brave ve Chrome için indir',
     'hero.source': 'Kaynak kodu gör',
     'hero.fine': 'Ücretsiz ve açık kaynak. Masaüstündeki her Chromium tarayıcıda çalışır.',
@@ -28,7 +28,10 @@
     'key.faster': 'Hızlandır',
     'key.reset': '1x’e dön',
     'key.auto': 'Oto geçiş',
-    'features.title': 'Web oynatıcının yapamadığı üç şey',
+    'features.title': 'Web oynatıcıda eksik olanlar',
+    'f0.title': 'Reklam yok',
+    'f0.body':
+      'Reklam olarak işaretli reel’ler ekrana gelmeden gizlenir, sesi kapatılır ve akış onları doğrudan atlar. Akışının ortasında artık “Shop now” yok.',
     'f1.title': 'Sıradaki reel, kendiliğinden',
     'f1.body':
       'Bir reel bitince Reel Pilot sonrakine kaydırır. Önce bir daha mı izlemek istiyorsun? Her reel, geçmeden önce beş kereye kadar oynayabilir.',
@@ -43,7 +46,7 @@
     x3: 'Kareyi resim olarak kopyala',
     x4: 'Reel’in bir bölümünü döngüye al',
     x5: 'Bu reel’de kal',
-    x6: 'Sponsorlu reel’ler sen görmeden gizlenir ve atlanır. Bir mola hatırlatıcı da seçtiğin sayıda reel ya da dakika sonunda oynatmayı durdurur.',
+    x6: 'Bir mola hatırlatıcı da seçtiğin sayıda reel ya da dakika sonunda oynatmayı durdurur ve sen devam edene kadar bekler.',
     'install.title': 'Bir dakikada kur',
     's1.title': 'İndir ve klasöre çıkar',
     's1.body':
