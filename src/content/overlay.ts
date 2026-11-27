@@ -1,7 +1,6 @@
 /**
  * In-page UI.
  * Stays out of Instagram's DOM tree: a single fixed host appended to <html>, with a Shadow DOM.
- * In full screen it moves into the full-screen element, the only part of the page still drawn.
  * Every frame it is aligned to the active video's on-screen rectangle.
  */
 import { formatTime } from '../core/format.ts';
@@ -141,8 +140,6 @@ export interface Overlay {
   setState(state: OverlayState): void;
   setLock(on: boolean): void;
   setFullscreen(on: boolean): void;
-  /** Moves the UI into `parent`; it puts itself back there if Instagram's rendering drops it. */
-  mount(parent: Element): void;
   setLoop(loop: AbLoop | null): void;
   toast(text: string): void;
   /** A sticky chip at the top of the video, shown until cleared with null. */
@@ -188,8 +185,7 @@ export function createOverlay(handlers: OverlayHandlers): Overlay {
 
   const rootEl = el('div', { class: 'root', hidden: '' }, [pill, badgeEl, toastEl, bannerEl, bar]);
   shadow.append(rootEl);
-  let parent: Element = document.documentElement;
-  parent.append(host);
+  document.documentElement.append(host);
 
   const listeners = new AbortController();
   const last = { x: NaN, y: NaN, w: NaN, h: NaN, p: NaN, hot: false, marks: '' };
@@ -281,7 +277,6 @@ export function createOverlay(handlers: OverlayHandlers): Overlay {
   }
 
   function frame(rect: DOMRect, currentTime: number, duration: number): void {
-    if (host.parentNode !== parent) parent.append(host);
     if (rect.width <= 0 || rect.bottom <= 0 || rect.top >= window.innerHeight) return hide();
     if (rootEl.hidden) rootEl.hidden = false;
 
@@ -369,10 +364,6 @@ export function createOverlay(handlers: OverlayHandlers): Overlay {
       full.setAttribute('aria-pressed', String(on));
       fullIcon.firstElementChild?.setAttribute('d', on ? ICON_COLLAPSE : ICON_EXPAND);
       labelFull();
-    },
-    mount(next) {
-      parent = next;
-      if (host.parentNode !== parent) parent.append(host);
     },
     setLoop(next) {
       loop = next;
