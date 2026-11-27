@@ -51,6 +51,7 @@ function render(): void {
   select('stopAfterReels').value = String(settings.stopAfterReels);
   select('stopAfterMinutes').value = String(settings.stopAfterMinutes);
   input('shortcuts').checked = settings.shortcuts;
+  input('skipAds').checked = settings.skipAds;
   $('keys').classList.toggle('off', !settings.shortcuts);
 }
 
@@ -62,6 +63,7 @@ function save(patch: Partial<Record<keyof Settings, unknown>>): void {
 
 input('autoAdvance').addEventListener('change', (e) => save({ autoAdvance: (e.target as HTMLInputElement).checked }));
 input('shortcuts').addEventListener('change', (e) => save({ shortcuts: (e.target as HTMLInputElement).checked }));
+input('skipAds').addEventListener('change', (e) => save({ skipAds: (e.target as HTMLInputElement).checked }));
 input('speed').addEventListener('input', (e) => save({ speed: (e.target as HTMLInputElement).value }));
 $('speedReset').addEventListener('click', () => save({ speed: 1 }));
 for (const key of ['loops', 'seekStep', 'stopAfterReels', 'stopAfterMinutes'] as const) {
