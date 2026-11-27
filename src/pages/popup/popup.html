@@ -46,23 +46,59 @@
       </select>
     </label>
 
+    <div class="row">
+      <span class="label">Mola hatırlat<small>Reel sayısı ya da süre dolunca duraklat</small></span>
+      <span class="pair">
+        <select id="stopAfterReels" aria-label="Reel sayısı">
+          <option value="0">Reel: kapalı</option>
+          <option value="10">10 reel</option>
+          <option value="20">20 reel</option>
+          <option value="30">30 reel</option>
+          <option value="50">50 reel</option>
+        </select>
+        <select id="stopAfterMinutes" aria-label="Süre">
+          <option value="0">Süre: kapalı</option>
+          <option value="5">5 dk</option>
+          <option value="10">10 dk</option>
+          <option value="15">15 dk</option>
+          <option value="30">30 dk</option>
+          <option value="60">60 dk</option>
+        </select>
+      </span>
+    </div>
+
     <label class="row">
       <span class="label">Klavye kısayolları</span>
       <input type="checkbox" id="shortcuts" class="switch" />
     </label>
 
-    <dl class="keys" id="keys">
+    <details class="shortcuts">
+      <summary>Kısayol listesi</summary>
+      <dl class="keys" id="keys">
       <dt><kbd>←</kbd><kbd>→</kbd></dt>
       <dd>Geri / ileri sar</dd>
-      <dt><kbd>S</kbd><kbd>D</kbd></dt>
-      <dd>Yavaşlat / hızlandır</dd>
-      <dt><kbd>R</kbd></dt>
-      <dd>Hızı 1x yap</dd>
+      <dt><kbd>S</kbd><kbd>D</kbd><kbd>R</kbd></dt>
+      <dd>Yavaşlat / hızlandır / 1x</dd>
+      <dt><kbd>F</kbd></dt>
+      <dd>Basılı tut: 2 kat hız</dd>
+      <dt><kbd>,</kbd><kbd>.</kbd></dt>
+      <dd>Kare kare geri / ileri</dd>
+      <dt><kbd>C</kbd></dt>
+      <dd>Kareyi kopyala</dd>
+      <dt><kbd>[</kbd><kbd>]</kbd><kbd>\</kbd></dt>
+      <dd>A-B döngü: başla / bitir / temizle</dd>
       <dt><kbd>A</kbd></dt>
       <dd>Otomatik geçiş aç/kapa</dd>
-    </dl>
+      <dt><kbd>K</kbd></dt>
+      <dd>Bu reel'de kal</dd>
+      </dl>
+    </details>
 
-    <script src="../src/core.js"></script>
+    <footer>
+      <button type="button" id="diag">Tanılama kopyala</button>
+      <span id="diagStatus" role="status"></span>
+    </footer>
+
     <script src="popup.js"></script>
   </body>
 </html>

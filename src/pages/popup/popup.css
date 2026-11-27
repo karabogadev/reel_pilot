@@ -139,13 +139,24 @@ input[type='range'] {
   transform: translateX(14px);
 }
 
+.shortcuts {
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.shortcuts summary {
+  padding: 4px 0;
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+
 .keys {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 7px 12px;
   margin: 0;
-  padding-top: 12px;
-  border-top: 1px solid var(--line);
+  padding-top: 8px;
   color: var(--muted);
   font-size: 12px;
   transition: opacity 0.15s ease;
@@ -174,4 +185,22 @@ kbd {
   color: var(--text);
   font: 600 11px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
   text-align: center;
+}
+
+.pair {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: none;
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
 }

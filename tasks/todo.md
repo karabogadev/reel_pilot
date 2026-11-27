@@ -51,3 +51,36 @@ Decisions (user): make the repo public · `README.md` (EN) + `README.tr.md` · s
 User decision: wait for v0.2.0. Then: align the README's "How it works / Development / release" sections and the site
 copy with v0.2.0 (`npm run build`, Load unpacked `dist/`, new features) → commit only these files → push → public →
 Pages → release v0.2.0.
+
+---
+
+# v0.2 — TypeScript rewrite + viewing pack, reel record, filters, Creator HUD
+
+Decisions (user): all four bundles (A viewing pack, B feed filters, C history + collection, D Creator HUD) ·
+Instagram only · TypeScript + esbuild · the user verifies the logged-in session in Brave at each stop.
+
+- [x] **M0 — Port.** Toolchain (`npm run check`, `npm run build` → `dist/`), 1:1 TypeScript port of core / overlay /
+  content, shutdown when the extension context is gone, "Tanılama kopyala" in the popup
+- [x] **M1 — Viewing pack.** Hold `F` to boost, frame step `,` `.`, copy frame `C`, A-B loop `[` `]` `\`,
+  stay lock `K`, auto-advance gates (typing, lock, loop, break), break reminder after N reels / M minutes
+- [ ] **Stop 1 (user):** load `dist/` in Brave, logged in; run the checklist; paste the diagnostics
+- [ ] **M2 — Identity + data + HUD.** ReelTracker (code from the path), MAIN-world hook, extractor, HUD chips
+- [ ] **M3 — History + collection.** Service worker, IndexedDB, thumbnails, save with `B`, library page, export
+- [ ] **M4 — Filters.** Skip watched, by duration, blocked accounts / keywords / hashtags, sponsored (best effort)
+- [ ] **M5 — Loudness levelling** (experimental, off by default)
+
+## Review — M0 + M1
+
+Verified on the live Reels page (headless Chromium, logged out, `dist/content.js` injected with a storage shim):
+v0.1 parity (speed on every reel and kept across an advance, arrow seek, advance at the end); boost 1x→2x and
+1.5x→3x, released on keyup and on blur, `defaultPlaybackRate` untouched; frame step pauses and moves one frame;
+A-B loop stays inside the range and shows its markers; lock and a focused text field both keep the reel at its end,
+unlocking lets it advance; break banner pauses the next reel and "Devam et" resumes it; diagnostics report.
+
+Found and fixed: after a frame step pauses the video, Instagram still believes it is playing, so one click did
+nothing. The first click on a stepped video is now handled by the extension; Instagram's own toggle works after it.
+
+Not verified: clipboard copy of a frame (headless has no clipboard; the download fallback ran instead), the real
+extension install, and everything specific to a logged-in session.
+
+Deviation from the plan: M0 and M1 are one commit, because the port and the new rules share files.

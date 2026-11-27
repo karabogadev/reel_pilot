@@ -1,0 +1,24 @@
+{
+  "name": "reel-pilot",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Auto-advance, seeking, speed and viewing tools for Instagram Reels on the web.",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "node --test \"tests/**/*.test.ts\"",
+    "check": "npm run typecheck && npm run lint && npm test"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/chrome": "0.3.8",
+    "@types/node": "26.6.11",
+    "esbuild": "0.28.2",
+    "eslint": "10.15.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.74.0"
+  }
+}
